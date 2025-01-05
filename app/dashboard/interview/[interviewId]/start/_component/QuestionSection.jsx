@@ -2,6 +2,7 @@ import { Volume2Icon } from "lucide-react";
 import React from "react";
 
 function QuestionSection({ question, activeQuestion }) {
+  // Text-to-speech functionality
   const textToSpeech = (text) => {
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
@@ -12,28 +13,35 @@ function QuestionSection({ question, activeQuestion }) {
   };
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <div
-          className={`p-2 w-full bg-secondary rounded-full m-3 flex flex-row justify-center items-center ${
-            activeQuestion == question.id ? `bg-blue-700 text-white` : ``
-          }`}
-        >
+    <div className="w-full p-4">
+      {/* Question Header */}
+      <div
+        className={`p-3 w-full rounded-lg transition-all duration-300 flex flex-row justify-between items-center cursor-pointer ${
+          activeQuestion === question.id
+            ? "bg-blue-700 text-white shadow-lg"
+            : "bg-secondary hover:bg-blue-500 hover:text-white"
+        }`}
+        onClick={() => textToSpeech(question.question)} // Speak the question on click
+      >
+        <div className="flex items-center gap-2">
           <strong>Question #</strong>
           <p>{question.id}</p>
         </div>
       </div>
-      <div className="m-2">
-        {activeQuestion === question.id && (
-          <div className="border-2 border-blue-500 bg-blue-300 text-sm rounded-sm p-2 flex flex-col items-start gap-2">
-            <p>{question.question}</p>
-            <Volume2Icon
-              className="w-6 h-6 cursor-pointer"
-              onClick={() => textToSpeech(question.question)}
-            />
-          </div>
-        )}
-      </div>
+
+      {/* Question Body */}
+      {activeQuestion === question.id && (
+        <div className="mt-2 p-4 border-2 border-blue-500 bg-blue-100 rounded-lg text-sm">
+          <p className="text-gray-800">{question.question}</p>
+          <Volume2Icon
+            className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent the parent onClick from firing
+              textToSpeech(question.question);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

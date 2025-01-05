@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import QuestionSection from "./_component/QuestionSection";
 import RecordAnswerSection from "./_component/RecordAnswerSection";
+
 function StartInterview() {
   const { interviewId } = useParams();
   const [interviewDetails, setInterviewDetails] = useState(null);
@@ -51,6 +52,7 @@ function StartInterview() {
         <RecordAnswerSection
           question={questions}
           activeQuestion={activeQuestion}
+          interviewId={interviewDetails?.mockInterviewId}
         />
       </div>
     </div>

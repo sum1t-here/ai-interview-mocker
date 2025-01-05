@@ -4,13 +4,20 @@ import { Button } from "@/components/ui/button";
 import { LucideWebcam } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import useSpeechToText from "react-hook-speech-to-text";
 import { toast } from "sonner";
 import { chatSession } from "@/utils/GeminiAiModal";
+import { useUser } from "@clerk/nextjs";
 
-function RecordAnswerSection({ question, activeQuestion }) {
+// Dynamically import react-hook-speech-to-text
+const useSpeechToText =
+  typeof window !== "undefined"
+    ? require("react-hook-speech-to-text").default
+    : () => ({});
+
+function RecordAnswerSection({ question, activeQuestion, interviewId }) {
   const [webcamEnabled, setWebcamEnabled] = useState(false);
   const [answer, setAnswer] = useState("");
+  const { user } = useUser();
 
   const {
     error,
@@ -65,7 +72,7 @@ function RecordAnswerSection({ question, activeQuestion }) {
 
       // Get the active question text
       const activeQuestionData = Array.isArray(question)
-        ? question[activeQuestion]
+        ? question[activeQuestion - 1]
         : question;
       if (!activeQuestionData) {
         toast.error("No active question found.");
@@ -73,13 +80,12 @@ function RecordAnswerSection({ question, activeQuestion }) {
       }
 
       const questionText = activeQuestionData.question;
-      console.log("Question:", questionText);
+      // console.log("Question:", questionText);
 
       // Generate feedback prompt
-      const feedbackPrompt = `You are an interviewer. You are given a user's answer to a question. You are to provide rating and feedback on the user's answer in 3 to 5 lines in json format.
+      const feedbackPrompt = `You are an interviewer. You are given a user's answer to a question. You are to provide rating and feedback on the user's answer in 3 to 5 lines in json format, also provide the correct answer, the key for correct answer is "correctAnswer".
       User's answer: ${answer}
       Question: ${questionText}`;
-      // console.log("Feedback Prompt:", feedbackPrompt);
 
       // Get feedback from API
       try {
@@ -88,12 +94,30 @@ function RecordAnswerSection({ question, activeQuestion }) {
           .text()
           .replace("```json", "")
           .replace("```", "");
-        // console.log("Feedback Response:", mockJson);
-
-        // Parse the JSON response
         const feedback = JSON.parse(mockJson);
         // console.log("Parsed Feedback:", feedback);
+        // console.log("correctAnswer", feedback?.correctAnswer);
         toast.success("Feedback received successfully!");
+
+        // Save user response to the database
+        const response = await fetch("/api/addUserResponse", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            mockInterviewId: interviewId,
+            question: questionText,
+            userAnswer: answer,
+            feedback: feedback?.feedback,
+            correctAnswer: feedback?.correctAnswer,
+            rating: feedback?.rating,
+            userEmail: user?.primaryEmailAddress?.emailAddress,
+          }),
+        });
+
+        const data = await response.json();
+        console.log(data);
       } catch (error) {
         console.error("Failed to parse feedback:", error);
         toast.error("Failed to process feedback. Please try again.");
