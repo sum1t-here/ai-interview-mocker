@@ -141,7 +141,7 @@ function RecordAnswerSection({ question, activeQuestion, interviewId }) {
             onUserMedia={() => setWebcamEnabled(true)}
             onUserMediaError={() => setWebcamEnabled(false)}
             mirrored={true}
-            style={{ height: "300px", width: "100%" }}
+            style={{ height: "525px", width: "100%" }}
             videoConstraints={{ facingMode: "environment" }}
           />
           <div className="flex flex-row gap-2 w-full">
@@ -167,7 +167,7 @@ function RecordAnswerSection({ question, activeQuestion, interviewId }) {
       ) : (
         <div className="flex flex-col items-center justify-center gap-3">
           <LucideWebcam
-            className="h-60 w-full p-10 bg-secondary rounded-sm border-2 border-primary"
+            className="h-72 w-full p-10 bg-secondary rounded-sm border-2 border-primary"
             onClick={() => setWebcamEnabled(true)}
           />
           <Button className="w-full" onClick={() => setWebcamEnabled(true)}>

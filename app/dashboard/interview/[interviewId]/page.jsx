@@ -1,16 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Lightbulb, LucideWebcam } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Webcam from "react-webcam";
 
 function Interview() {
   const { interviewId } = useParams();
 
   const [interviewDetails, setInterviewDetails] = useState(null);
-  const [webcamEnabled, setWebcamEnabled] = useState(false);
 
   const getInterviewDetails = async () => {
     const response = await fetch("/api/getInterview", {
@@ -31,7 +29,7 @@ function Interview() {
   return (
     <div className="my-10 flex justify-center items-center flex-col">
       <h2 className="font-bols text-2xl m-5 p-5">Let's get started</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="flex flex-col gap-5 justify-center items-center">
         <div className="p-5 border-2 border-primary rounded-sm">
           {interviewDetails && (
             <div className="flex flex-col gap-3">
@@ -74,36 +72,6 @@ function Interview() {
           <Link href={`/dashboard/interview/${interviewId}/start`}>
             <Button className="w-full mt-5">Start Interview</Button>
           </Link>
-        </div>
-        <div>
-          {webcamEnabled ? (
-            <div className="flex flex-col items-center justify-center gap-3">
-              <Webcam
-                onUserMedia={() => setWebcamEnabled(true)}
-                onUserMediaError={() => setWebcamEnabled(false)}
-                mirrored={true}
-                style={{ height: "300", width: "100%" }}
-                videoConstraints={{ facingMode: "environment" }}
-              />
-              <Button
-                className="w-full"
-                onClick={() => setWebcamEnabled(false)}
-              >
-                Disable Webcam and Microphone
-              </Button>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center gap-3">
-              <LucideWebcam
-                className="h-60 w-full p-10 bg-secondary rounded-sm border-2 border-primary"
-                onClick={() => setWebcamEnabled(true)}
-              />
-
-              <Button className="w-full" onClick={() => setWebcamEnabled(true)}>
-                Enable Webcam and Microphone
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     </div>

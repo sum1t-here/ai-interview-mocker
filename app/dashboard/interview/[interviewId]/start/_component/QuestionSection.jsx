@@ -19,9 +19,8 @@ function QuestionSection({ question, activeQuestion }) {
         className={`p-3 w-full rounded-lg transition-all duration-300 flex flex-row justify-between items-center cursor-pointer ${
           activeQuestion === question.id
             ? "bg-blue-700 text-white shadow-lg"
-            : "bg-secondary hover:bg-blue-500 hover:text-white"
+            : "bg-secondary"
         }`}
-        onClick={() => textToSpeech(question.question)} // Speak the question on click
       >
         <div className="flex items-center gap-2">
           <strong>Question #</strong>
