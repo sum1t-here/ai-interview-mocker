@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { LoaderIcon } from "lucide-react";
 import { chatSession } from "../../../utils/GeminiAiModal";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 function AddNewInterview() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -21,13 +22,22 @@ function AddNewInterview() {
   const [jobExperience, setJobExperience] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const InterviewPrompt = `Job Title: ${jobTitle}\nJob Description: ${jobDescription}\nJob Experience: ${jobExperience}`;
+      const InterviewPrompt = `I am a ${jobTitle} having tech stack ${jobDescription} generate a list of five question based on my ${jobExperience}\n years of experience in json format.Follow the pattern below for generating the questions:
+      {
+        "questions": [
+          {
+            "question": "What is your name?",
+            "id": "1"
+          }
+        ]
+      }`;
 
       const result = await chatSession.sendMessage(InterviewPrompt);
       const mockJsonResponse = result.response
@@ -49,7 +59,10 @@ function AddNewInterview() {
         });
 
         const data = await response.json();
-        console.log("Inserted data:", data);
+        if (data) {
+          setOpenDialog(false);
+          router.push(`/dashboard/interview/${data.data.mockInterviewId}`);
+        }
         setOpenDialog(false); // Close the dialog after successful submission
       }
     } catch (error) {

@@ -30,7 +30,7 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error saving interview:", error);
+    console.error("Error saving interview:", error.message);
     return NextResponse.json(
       { success: false, error: "Database error" },
       { status: 500 }
