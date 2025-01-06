@@ -33,7 +33,7 @@ function Home() {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* Hero Section */}
-      <section className="w-full text-center relative overflow-hidden min-h-screen">
+      <section className="w-full text-center relative overflow-hidden min-h-screen flex flex-col items-center justify-center">
         {/* Gradient Background */}
         <div className="absolute inset-0  bg-gradient-to-r from-blue-600 to-purple-600 opacity-10 blur-3xl"></div>
         <h1 className="text-5xl md:text-7xl font-bold mt-5 relative z-10 text-gray-900">
@@ -50,7 +50,7 @@ function Home() {
           Start Practicing Now
         </Button>
         {/* Interactive AI Interview Simulation */}
-        <div className="mt-16 bg-white rounded-lg p-6 max-w-2xl mx-auto shadow-2xl border border-gray-200">
+        <div className="mt-16 bg-white rounded-lg p-6 max-w-2xl mx-auto shadow-2xl border border-gray-200 w-full">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <Bot className="text-blue-500" size={24} />

@@ -17,7 +17,7 @@ function QuestionSection({ question, activeQuestion }) {
       {/* Question Header */}
       <div
         className={`p-3 w-full rounded-lg transition-all duration-300 flex flex-row justify-between items-center cursor-pointer ${
-          activeQuestion === question.id
+          activeQuestion == question.id
             ? "bg-blue-700 text-white shadow-lg"
             : "bg-secondary"
         }`}
@@ -29,14 +29,14 @@ function QuestionSection({ question, activeQuestion }) {
       </div>
 
       {/* Question Body */}
-      {activeQuestion === question.id && (
+      {activeQuestion == question.id && (
         <div className="mt-2 p-4 border-2 border-blue-500 bg-blue-100 rounded-lg text-sm">
           <p className="text-gray-800">{question.question}</p>
           <Volume2Icon
             className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent the parent onClick from firing
-              textToSpeech(question.question);
+              e.stopPropagation();
+              textToSpeech(question?.question);
             }}
           />
         </div>

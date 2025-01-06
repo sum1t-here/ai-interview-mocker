@@ -33,60 +33,59 @@ function StartInterview() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-primary rounded-sm p-5 mt-4">
-      <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-primary rounded-sm">
-          {questions && questions.length > 0 ? (
-            questions.map((question, index) => {
-              return (
-                <div>
-                  <div>
+    <div className="w-full flex flex-col items-center justify-center min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-primary rounded-sm p-5 mt-4 w-full">
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-2 border-primary rounded-sm">
+            {questions && questions.length > 0 ? (
+              questions.map((question, index) => {
+                return (
+                  <div key={question.id}>
                     <QuestionSection
-                      key={index}
                       question={question}
                       activeQuestion={activeQuestion}
                       setActiveQuestion={setActiveQuestion}
                     />
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <div>No questions found</div>
-          )}
+                );
+              })
+            ) : (
+              <div>No questions found</div>
+            )}
+          </div>
+          <div className="flex justify-center items-center w-full mt-5 gap-2">
+            {activeQuestion > 0 && (
+              <Button
+                className="w-full"
+                onClick={() => setActiveQuestion(activeQuestion - 1)}
+              >
+                Previous
+              </Button>
+            )}
+            {activeQuestion < questions.length && (
+              <Button
+                className="w-full"
+                onClick={() => setActiveQuestion(activeQuestion + 1)}
+              >
+                Next
+              </Button>
+            )}
+            {activeQuestion === questions.length && (
+              <div className="w-full">
+                <Link href={`/dashboard/interview/${interviewId}/feedback`}>
+                  <Button className="w-full">Submit</Button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="flex justify-center items-center w-full mt-5 gap-2">
-          {activeQuestion > 0 && (
-            <Button
-              className="w-full"
-              onClick={() => setActiveQuestion(activeQuestion - 1)}
-            >
-              Previous
-            </Button>
-          )}
-          {activeQuestion < questions.length && (
-            <Button
-              className="w-full"
-              onClick={() => setActiveQuestion(activeQuestion + 1)}
-            >
-              Next
-            </Button>
-          )}
-          {activeQuestion === questions.length && (
-            <div className="w-full">
-              <Link href={`/dashboard/interview/${interviewId}/feedback`}>
-                <Button className="w-full">Submit</Button>
-              </Link>
-            </div>
-          )}
+        <div>
+          <RecordAnswerSection
+            question={questions}
+            activeQuestion={activeQuestion}
+            interviewId={interviewDetails?.mockInterviewId}
+          />
         </div>
-      </div>
-      <div>
-        <RecordAnswerSection
-          question={questions}
-          activeQuestion={activeQuestion}
-          interviewId={interviewDetails?.mockInterviewId}
-        />
       </div>
     </div>
   );

@@ -26,17 +26,17 @@ function Header() {
         </li>
         <li
           className={`hover:text-primary hover:font-bold transition-all duration-300 cursor-pointer ${
-            pathname === "/dashboard/features" && "text-primary font-bold"
+            pathname === "/features" && "text-primary font-bold"
           }`}
         >
-          <Link href="/dashboard/features">Features</Link>
+          <Link href="/features">Features</Link>
         </li>
         <li
           className={`hover:text-primary hover:font-bold transition-all duration-300 cursor-pointer ${
-            pathname === "/dashboard/how" && "text-primary font-bold"
+            pathname === "/how" && "text-primary font-bold"
           }`}
         >
-          <Link href="/dashboard/how">How it works?</Link>
+          <Link href="/how">How it works?</Link>
         </li>
       </ul>
       <UserButton />
