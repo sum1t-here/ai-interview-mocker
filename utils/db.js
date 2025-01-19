@@ -23,10 +23,6 @@ async function connectDB() {
 
   if (!cached.promise) {
     // Create a new connection promise
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;

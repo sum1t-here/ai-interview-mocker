@@ -1,8 +1,10 @@
 import UserAnswer from "@/models/UserAnswer";
+import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
+    await connectDB();
     const { interviewId, userEmail } = await req.json();
 
     if (!interviewId) {

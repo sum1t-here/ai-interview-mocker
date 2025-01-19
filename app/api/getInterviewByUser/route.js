@@ -1,10 +1,13 @@
 import MockInterview from "@/models/MockInterview";
+import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     // Parse the request body
     const { userEmail } = await req.json();
+
+    await connectDB();
 
     // Validate userEmail
     if (!userEmail) {
